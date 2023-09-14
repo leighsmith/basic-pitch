@@ -140,9 +140,12 @@ def run_inference(
     overlap_len = n_overlapping_frames * FFT_HOP
     hop_size = AUDIO_N_SAMPLES - overlap_len
 
+    print("run_inference calling get_audio_input")
     audio_windowed, _, audio_original_length = get_audio_input(audio_path, overlap_len, hop_size)
 
+    print("run_inference calling model")
     output = model(audio_windowed)
+    print("run_inference unwrapping output")
     unwrapped_output = {k: unwrap_output(output[k], audio_original_length, n_overlapping_frames) for k in output}
 
     if debug_file:
@@ -157,7 +160,7 @@ def run_inference(
                 },
                 f,
             )
-
+    print("run_inference finished")
     return unwrapped_output
 
 
